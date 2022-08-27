@@ -1,0 +1,5 @@
+node_modules
+package-lock.json
+public/uploads/users
+public/uploads/tasks
+public/uploads/comments
