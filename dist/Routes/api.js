@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const authRouter = require('./auth');
 const userRouter = require('./user');
 const projectRouter = require('./project');

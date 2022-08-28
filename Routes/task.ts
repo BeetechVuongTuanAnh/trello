@@ -9,14 +9,14 @@ const DIR = "./public/uploads/tasks";
 
 const storage = multer.diskStorage({
   destination: (
-    req: any,
+    req: express.Request,
     file: any,
     cb: any
   ) => {
     cb(null, DIR);
   },
   filename: (
-    req: any,
+    req: express.Request,
     file: any,
     cb: any
   ) => {
@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
 
 var upload = multer({
   storage: storage,
-  fileFilter: (req: any, file: any, cb: any) => {
+  fileFilter: (req: express.Request, file: any, cb: any) => {
     if (
       file.mimetype == "image/png" ||
       file.mimetype == "image/jpg" ||

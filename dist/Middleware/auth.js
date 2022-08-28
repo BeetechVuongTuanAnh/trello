@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const jwt_decode = require('jwt-decode');
 class AuthMiddleware {
     /**

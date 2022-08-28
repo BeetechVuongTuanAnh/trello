@@ -1,4 +1,4 @@
-
+import { NextFunction, Request, Response } from 'express';
 import jwt = require('jsonwebtoken');
 const jwtConfig = require('../Configs/Jwt');
 const { isEmpty } = require('underscore');
@@ -16,7 +16,7 @@ class HistoryController {
     /**
      * [GET] /user/list
      */
-    list(req : any, res : any, next: any) {
+    list(req: Request, res: Response, next: NextFunction) {
         History.find({ task: mongoose.Types.ObjectId(req.params._id) })
             .populate('old_assign')
             .populate('old_project')
@@ -39,7 +39,7 @@ class HistoryController {
     /**
      * [GET] /project/search
      */
-    all(req : any, res : any, next: any) {
+    all(req: Request, res: Response, next: NextFunction) {
         History.find()
             .populate('old_assign')
             .populate('old_project')
@@ -65,7 +65,7 @@ class HistoryController {
     /**
      * [GET] /project/search
      */
-    search(req : any, res : any, next: any) {
+    search(req: Request, res: Response, next: NextFunction) {
         History.find({ user_create: mongoose.Types.ObjectId(req.params._id) })
             .populate('old_assign')
             .populate('old_project')
@@ -92,7 +92,7 @@ class HistoryController {
     /**
      * [POST] /project/create
      */
-    create(req : any, res : any, next: any) {
+    create(req: Request, res: Response, next: NextFunction) {
         const data = req.body;
         const note = new History(data);
 

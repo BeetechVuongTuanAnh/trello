@@ -1,4 +1,4 @@
-
+import { NextFunction, Request, Response } from 'express';
 import jwt = require('jsonwebtoken');
 const jwtConfig = require('../Configs/Jwt');
 const { isEmpty } = require('underscore');
@@ -11,7 +11,7 @@ class ProjectController {
     /**
      * [GET] /user/list
      */
-    list(req : any, res : any, next: any) {
+    list(req: Request, res: Response, next: NextFunction) {
         Project.find().populate('members').populate('project_manager')
             .then((projects: any) => {
                 if (projects) {
@@ -28,7 +28,7 @@ class ProjectController {
     /**
      * [GET] /project/search
      */
-    search(req : any, res : any, next: any) {
+    search(req: Request, res: Response, next: NextFunction) {
         Project.find(req.body).populate('members').populate('project_manager')
             .then((projects: any) => {
                 if (projects) {
@@ -45,7 +45,7 @@ class ProjectController {
     /**
      * [GET] /user/detail/:_id
      */
-    detail(req : any, res : any, next: any) {
+    detail(req: Request, res: Response, next: NextFunction) {
         const id = req.params._id;
         Project.findOne({ _id: id }).populate('members').populate('project_manager')
             .then((project: any) => {
@@ -63,7 +63,7 @@ class ProjectController {
     /**
      * [POST] /project/update
      */
-    update(req : any, res : any, next: any) {
+    update(req: Request, res: Response, next: NextFunction) {
         const id = req.body._id;
         let project = { ...req.body };
         Project.findOneAndUpdate({ _id: id }, project)
@@ -78,7 +78,7 @@ class ProjectController {
     /**
      * [DELETE] /project/delete
      */
-    delete(req : any, res : any, next: any) {
+    delete(req: Request, res: Response, next: NextFunction) {
         const id = req.params._id;
         Project.findOneAndDelete({ _id: id })
             .then((project: any) => {
@@ -92,7 +92,7 @@ class ProjectController {
     /**
      * [POST] /project/create
      */
-    create(req : any, res : any, next: any) {
+    create(req: Request, res: Response, next: NextFunction) {
         const data = req.body;
         const project_name = req.body.project_name;
 

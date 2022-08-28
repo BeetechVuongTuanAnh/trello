@@ -1,3 +1,5 @@
+import { Application } from "express";
+
 const authRouter = require('./auth');
 const userRouter = require('./user');
 const projectRouter = require('./project');
@@ -7,7 +9,7 @@ const commentRouter = require('./comment');
 const historyRouter = require('./history');
 
 
-function route(app: any ){
+function route(app: Application ){
     app.use('/api/user', userRouter);
     app.use('/api/project', projectRouter);
     app.use('/api/task', taskRouter);

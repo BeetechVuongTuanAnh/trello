@@ -1,3 +1,4 @@
+import { NextFunction, Request, Response } from 'express';
 import jwt = require('jsonwebtoken');
 const jwtConfig = require('../Configs/Jwt');
 const { isEmpty } = require('underscore');
@@ -9,7 +10,7 @@ class UserController {
     /**
      * [GET] /user/list
      */
-    list(req: any, res: any, next: any) {
+    list(req: Request, res: Response, next: NextFunction) {
         User.find({ delete_flag: TypeCode.DELETE_FLAG.FALSE })
             .then((users: any) => {
                 if (users) {
@@ -26,7 +27,7 @@ class UserController {
     /**
      * [GET] /user/search
      */
-    search(req: any, res: any, next: any) {
+    search(req: Request, res: Response, next: NextFunction) {
         User.find(req.body)
             .then((users: any) => {
                 if (users) {
@@ -43,7 +44,7 @@ class UserController {
     /**
      * [GET] /user/detail/:_id
      */
-    detail(req: any, res: any, next: any) {
+    detail(req: Request, res: Response, next: NextFunction) {
         const id = req.params._id;
         User.findOne({ _id: id })
             .then((user: any) => {
@@ -61,15 +62,15 @@ class UserController {
     /**
      * [POST] /user/update
      */
-    update(req: any, res: any, next: any) {
+    update(req: Request, res: Response, next: NextFunction) {
         const id = req.body._id;
         let user = { ...req.body };
-        if (req.files['avatar']) {
-            user.avatar = '/public/uploads/users/' + req.files['avatar'][0].filename;
+        if ((req as any).files['avatar']) {
+            user.avatar = '/public/uploads/users/' + (req as any).files['avatar'][0].filename;
         }
 
-        if (req.files['sub_avatar']) {
-            user.sub_avatar = '/public/uploads/users/' + req.files['sub_avatar'][0].filename;
+        if ((req as any).files['sub_avatar']) {
+            user.sub_avatar = '/public/uploads/users/' + (req as any).files['sub_avatar'][0].filename;
         }
 
         User.findOneAndUpdate({ _id: id }, user)
@@ -88,7 +89,7 @@ class UserController {
     /**
      * [DELETE] /user/delete
      */
-    delete(req: any, res: any, next: any) {
+    delete(req: Request, res: Response, next: NextFunction) {
         const id = req.params._id;
         User.findOneAndDelete({ _id: id })
             .then((user: any) => {
@@ -102,7 +103,7 @@ class UserController {
     /**
      * [POST] /user/create
      */
-    create(req: any, res: any, next: any) {
+    create(req: Request, res: Response, next: NextFunction) {
         const email = req.body.email;
 
         User.find({
@@ -111,12 +112,12 @@ class UserController {
             .then((users: any) => {
                 if (isEmpty(users)) {
                     const user = new User(req.body);
-                    if (req.files['avatar']) {
-                        user.avatar = '/public/uploads/users/' + req.files['avatar'][0].filename;
+                    if ((req as any).files['avatar']) {
+                        user.avatar = '/public/uploads/users/' + (req as any).files['avatar'][0].filename;
                     }
 
-                    if (req.files['sub_avatar']) {
-                        user.sub_avatar = '/public/uploads/users/' + req.files['sub_avatar'][0].filename;
+                    if ((req as any).files['sub_avatar']) {
+                        user.sub_avatar = '/public/uploads/users/' + (req as any).files['sub_avatar'][0].filename;
                     }
 
                     user.save((err: any) => {

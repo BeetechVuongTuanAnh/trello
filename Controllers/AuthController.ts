@@ -1,3 +1,4 @@
+import { NextFunction, Request, Response } from 'express';
 const { isEmpty } = require('underscore');
 const User = require('../Models/Users');
 const jwt = require('jsonwebtoken');
@@ -8,7 +9,7 @@ class AuthController {
     /**
      * [POST] /login
      */
-    login(req : any, res : any, next: any) {
+    login(req: Request, res: Response, next: NextFunction) {
         const email = req.body.email.toLowerCase();
         const password = req.body.password;
 
@@ -35,7 +36,7 @@ class AuthController {
     /**
      * [POST] /user/update
      */
-    change(req : any, res : any, next: any) {
+    change(req: Request, res: Response, next: NextFunction) {
         const id = req.body._id;
         const old_password = req.body.old_password;
         const password = req.body.password;
@@ -71,7 +72,7 @@ class AuthController {
     /**
      * [POST] /user/update
      */
-    reset(req : any, res : any, next: any) {
+    reset(req: Request, res: Response, next: NextFunction) {
         const id = req.params._id;
         const salt = bcrypt.genSaltSync(10);
 

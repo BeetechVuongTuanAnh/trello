@@ -1,4 +1,4 @@
-
+import { NextFunction, Request, Response } from 'express';
 import jwt = require('jsonwebtoken');
 const jwtConfig = require('../Configs/Jwt');
 const { isEmpty } = require('underscore');
@@ -16,7 +16,7 @@ class CommentController {
     /**
      * [GET] /user/list
      */
-    list(req : any, res : any, next: any) {
+    list(req: Request, res: Response, next: NextFunction) {
         Comment.find({ task: mongoose.Types.ObjectId(req.params._id) }).populate('user_create').populate('user_edit')
             .then((comments: any) => {
                 if (comments) {
@@ -33,7 +33,7 @@ class CommentController {
     /**
      * [GET] /user/all
      */
-    getAll(req : any, res : any, next: any) {
+    getAll(req: Request, res: Response, next: NextFunction) {
         Comment.find().populate('user_create').populate('user_edit').populate('task')
             .then((comments: any) => {
                 if (comments) {
@@ -50,7 +50,7 @@ class CommentController {
     /**
      * [GET] /project/search
      */
-    search(req : any, res : any, next: any) {
+    search(req: Request, res: Response, next: NextFunction) {
         Project.find(req.body).populate('members').populate('project_manager')
             .then((projects: any) => {
                 if (projects) {
@@ -67,7 +67,7 @@ class CommentController {
     /**
      * [GET] /user/detail/:_id
      */
-    detail(req : any, res : any, next: any) {
+    detail(req: Request, res: Response, next: NextFunction) {
         const id = req.params._id;
         Project.findOne({ _id: id }).populate('members')
             .then((project: any) => {
@@ -85,7 +85,7 @@ class CommentController {
     /**
      * [POST] /project/update
      */
-    update(req : any, res : any, next: any) {
+    update(req: Request, res: Response, next: NextFunction) {
         const id = req.body._id;
         let project = { ...req.body };
         Project.findOneAndUpdate({ _id: id }, project)
@@ -100,7 +100,7 @@ class CommentController {
     /**
      * [DELETE] /project/delete
      */
-    delete(req : any, res : any, next: any) {
+    delete(req: Request, res: Response, next: NextFunction) {
         const id = req.params._id;
         Comment.findOneAndDelete({ _id: id })
             .then((note: any) => {
@@ -114,13 +114,13 @@ class CommentController {
     /**
      * [POST] /project/create
      */
-    create(req : any, res : any, next: any) {
+    create(req: Request, res: Response, next: NextFunction) {
         const data = req.body;
         const comment = new Comment(data);
-        if (req.files.length) {
+        if ((req as any).files.length) {
             const files = [];
-            for (var i = 0; i < req.files.length; i++) {
-                files.push('/public/uploads/comments/' + req.files[i].filename)
+            for (var i = 0; i < (req as any).files.length; i++) {
+                files.push('/public/uploads/comments/' + (req as any).files[i].filename)
             }
             comment.files = files;
         }

@@ -8,10 +8,10 @@ const userController = require('../Controllers/UserController');
 const DIR = './public/uploads/users';
 
 const storage = multer.diskStorage({
-    destination: (req: any, file: any, cb: any) => {
+    destination: (req: express.Request, file: any, cb: any) => {
         cb(null, DIR);
     },
-    filename: (req: any, file: any, cb: any) => {
+    filename: (req: express.Request, file: any, cb: any) => {
         const fileName = file.originalname.toLowerCase().split(' ').join('-');
         cb(null, uuidv4() + '_' + fileName)
     }
@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 
 var upload = multer({
     storage: storage,
-    fileFilter: (req: any, file: any, cb: any) => {
+    fileFilter: (req: express.Request, file: any, cb: any) => {
         console.log(file);
         if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/) || file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
             

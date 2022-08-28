@@ -1,3 +1,5 @@
+import { NextFunction, Request, Response } from "express";
+
 const jwt_decode = require('jwt-decode');
 
 class AuthMiddleware {
@@ -7,7 +9,7 @@ class AuthMiddleware {
      * @param {*} res 
      * @param {*} next 
      */
-    isLogin(req: any, res: any, next: any){
+    isLogin(req: Request, res: Response, next: NextFunction){
         const token = req.headers;
         console.log(token);
         console.log(req.headers.Authorization);

@@ -1,4 +1,4 @@
-
+import { NextFunction, Request, Response } from 'express';
 import jwt = require('jsonwebtoken');
 const jwtConfig = require('../Configs/Jwt');
 const { isEmpty } = require('underscore');
@@ -15,7 +15,7 @@ class NoteController {
     /**
      * [GET] /user/list
      */
-    list(req : any, res : any, next: any) {
+    list(req: Request, res: Response, next: NextFunction) {
         Note.find({ owner: mongoose.Types.ObjectId(req.params._id) })
             .then((notes: any) => {
                 if (notes) {
@@ -32,7 +32,7 @@ class NoteController {
     /**
      * [GET] /project/search
      */
-    search(req : any, res : any, next: any) {
+    search(req: Request, res: Response, next: NextFunction) {
         Project.find(req.body).populate('members').populate('project_manager')
             .then((projects: any) => {
                 if (projects) {
@@ -49,7 +49,7 @@ class NoteController {
     /**
      * [GET] /user/detail/:_id
      */
-    detail(req : any, res : any, next: any) {
+    detail(req: Request, res: Response, next: NextFunction) {
         const id = req.params._id;
         Project.findOne({ _id: id }).populate('members')
             .then((project: any) => {
@@ -67,7 +67,7 @@ class NoteController {
     /**
      * [POST] /project/update
      */
-    update(req : any, res : any, next: any) {
+    update(req: Request, res: Response, next: NextFunction) {
         const id = req.body._id;
         let project = { ...req.body };
         Project.findOneAndUpdate({ _id: id }, project)
@@ -82,7 +82,7 @@ class NoteController {
     /**
      * [DELETE] /project/delete
      */
-    delete(req : any, res : any, next: any) {
+    delete(req: Request, res: Response, next: NextFunction) {
         const id = req.params._id;
         Note.findOneAndDelete({ _id: id })
             .then((note: any) => {
@@ -96,7 +96,7 @@ class NoteController {
     /**
      * [POST] /project/create
      */
-    create(req : any, res : any, next: any) {
+    create(req: Request, res: Response, next: NextFunction) {
         const data = req.body;
         const note = new Note(data);
 

@@ -1,3 +1,4 @@
+import { NextFunction, Request, Response } from 'express';
 import jwt = require('jsonwebtoken');
 const jwtConfig = require('../Configs/Jwt');
 const { isEmpty } = require('underscore');
@@ -14,7 +15,7 @@ class TaskController {
     /**
      * [GET] /user/list
      */
-    list(req: any, res: any, next: any) {
+    list(req: Request, res: Response, next: NextFunction) {
         Task.find({ project: mongoose.Types.ObjectId(req.params._id) })
             .then((tasks: any) => {
                 if (tasks) {
@@ -31,7 +32,7 @@ class TaskController {
     /**
      * [GET] /user/list
      */
-    all(req: any, res: any, next: any) {
+    all(req: Request, res: Response, next: NextFunction) {
         Task.find().populate('project').populate('assign')
             .then((tasks: any) => {
                 if (tasks) {
@@ -48,7 +49,7 @@ class TaskController {
     /**
      * [GET] /project/search
      */
-    search(req: any, res: any, next: any) {
+    search(req: Request, res: Response, next: NextFunction) {
         for (const [key, value] of Object.entries(req.body)) {
             if (key === "project") {
                 req.body.project = mongoose.Types.ObjectId(req.body.project);
@@ -73,7 +74,7 @@ class TaskController {
     /**
      * [GET] /user/detail/:_id
      */
-    detail(req: any, res: any, next: any) {
+    detail(req: Request, res: Response, next: NextFunction) {
         const id = req.params._id;
         Task.findOne({ _id: id }).populate({
             path: 'project',
@@ -94,13 +95,13 @@ class TaskController {
     /**
      * [POST] /project/update
      */
-    update(req: any, res: any, next: any) {
+    update(req: Request, res: Response, next: NextFunction) {
         const id = req.body._id;
         let task = { ...req.body };
-        if (req.files.length) {
+        if ((req as any).files.length) {
             const files = [];
-            for (var i = 0; i < req.files.length; i++) {
-                files.push('/public/uploads/tasks/' + req.files[i].filename)
+            for (var i = 0; i < (req as any).files.length; i++) {
+                files.push('/public/uploads/tasks/' + (req as any).files[i].filename)
             }
             task.files = files;
         }
@@ -116,7 +117,7 @@ class TaskController {
     /**
      * [DELETE] /project/delete
      */
-    delete(req: any, res: any, next: any) {
+    delete(req: Request, res: Response, next: NextFunction) {
         const id = req.params._id;
         Project.findOneAndDelete({ _id: id })
             .then((project: any) => {
@@ -130,7 +131,7 @@ class TaskController {
     /**
      * [POST] /project/create
      */
-    create(req: any, res: any, next: any) {
+    create(req: Request, res: Response, next: NextFunction) {
         const data = req.body;
         const title = req.body.title;
 
@@ -140,10 +141,10 @@ class TaskController {
             .then((tasks: any) => {
                 if (isEmpty(tasks)) {
                     const task = new Task(data);
-                    if (req.files.length) {
+                    if ((req as any).files.length) {
                         const files = [];
-                        for (var i = 0; i < req.files.length; i++) {
-                            files.push('/public/uploads/tasks/' + req.files[i].filename)
+                        for (var i = 0; i < (req as any).files.length; i++) {
+                            files.push('/public/uploads/tasks/' + (req as any).files[i].filename)
                         }
                         task.files = files;
                     }
