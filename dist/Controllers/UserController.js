@@ -112,16 +112,17 @@ class UserController {
                 }
                 user.save((err) => {
                     if (err) {
+                        console.log(err);
                         res.status(500);
-                        res.json({ message: 'Đăng kí tài khoản thất bại. Vui lòng thử lại !' });
+                        return res.json({ message: 'Đăng kí tài khoản thất bại. Vui lòng thử lại !' });
                     }
                     res.status(200);
-                    res.json({ message: "Đăng kí tài khoản thành công !" });
+                    return res.json({ message: "Đăng kí tài khoản thành công !" });
                 });
             }
             else {
                 res.status(500);
-                res.json({ message: `Tài khoản ${email} đã tồn tại. Vui lòng đăng kí tài khoản khác !` });
+                return res.json({ message: `Tài khoản ${email} đã tồn tại. Vui lòng đăng kí tài khoản khác !` });
             }
         })
             .catch(next);
